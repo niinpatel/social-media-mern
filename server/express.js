@@ -19,4 +19,7 @@ app.get('/', (req, res) => {
     res.status(200).send(Template())
 });
 
+import userRoutes from './routes/user.routes'
+app.use('/api/users', userRoutes);
+
 export default app;
