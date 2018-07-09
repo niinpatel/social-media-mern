@@ -11,7 +11,6 @@ let create = async(req, res) => {
         return res.json({message: 'Successfully signed up'})
 
     } catch (e) {
-        console.log(e)
         return res.status(400).json({error: errorHandler.getErrorMessage(e)})
     }
 
@@ -28,7 +27,7 @@ let userByID = async(req, res, next, id) => {
             next()
         }
     } catch (e) {
-        return res.status(400).json({error: 'User not found'})
+        return res.status(400).json({error: errorHandler.getErrorMessage(e)})
     }
 
 }
