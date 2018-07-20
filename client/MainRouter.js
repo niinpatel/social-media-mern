@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import {Route, Switch, Link} from 'react-router-dom'
 import Home from './Home'
 import Users from './user/Users'
+import Signup from './user/Signup'
 
 
 class MainRouter extends Component {
@@ -20,7 +21,9 @@ class MainRouter extends Component {
                 <Switch>
                     <Route exact path="/" component={Home}/>
                     <Route path="/users" component={Users}/>
+                    <Route path="/signup" component={Signup}/>
                 </Switch>
+                <Link to="/signup">Signup</Link>
                 <Link to="/users">Users</Link>
             </div>
         );
