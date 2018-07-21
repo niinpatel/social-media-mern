@@ -3,6 +3,7 @@ import {Route, Switch, Link} from 'react-router-dom'
 import Home from './Home'
 import Users from './user/Users'
 import Signup from './user/Signup'
+import Signin from './auth/Signin'
 
 
 class MainRouter extends Component {
@@ -22,9 +23,11 @@ class MainRouter extends Component {
                     <Route exact path="/" component={Home}/>
                     <Route path="/users" component={Users}/>
                     <Route path="/signup" component={Signup}/>
+                    <Route path="/signin" component={Signin}/>
                 </Switch>
                 <Link to="/signup">Signup</Link>
                 <Link to="/users">Users</Link>
+                <Link to="/signin">Signin</Link>
             </div>
         );
     }

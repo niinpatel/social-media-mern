@@ -9,6 +9,11 @@ let list = () => {
     return axios.get('/api/users').then(res => res.data)
 }
 
+let signin = user => {
+    return axios.post('/auth/signin', user).then(res => res.data)
+}
+
+
 export {
-    create, list
+    create, list, signin
 }

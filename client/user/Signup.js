@@ -9,7 +9,6 @@ import {withStyles} from 'material-ui/styles'
 import {create} from './api-user.js'
 import Dialog, {DialogActions, DialogContent, DialogContentText, DialogTitle} from 'material-ui/Dialog'
 import {Link} from 'react-router-dom'
-import Users from './Users'
 
 const styles = theme => ({
     card: {
@@ -63,12 +62,7 @@ class Signup extends Component {
           email: this.state.email || undefined,
           password: this.state.password || undefined
         } 
-        create(user).then((data) => {
-          if (data.error)
-            this.setState({error: data.error})
-          else
-            this.setState({error: '', open: true})
-        })
+        create(user).then((data) => this.setState({error: '', open: true})).catch(err => this.setState({error: err.response.data.error}))
     }
 
     render() {

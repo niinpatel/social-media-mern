@@ -9,11 +9,12 @@ let auth = {
         else
             return false
     },
-    authenticate(jwt, cb){
-        if(typeof window == "undefined"){
+    authenticate(jwt, cb){       
+        if(typeof window !== "undefined"){                      
             sessionStorage.setItem('jwt', JSON.stringify(jwt))
-        cb()
         }
+        cb()
+
     },
     signout(cb){
         if(typeof window !== "undefined")
