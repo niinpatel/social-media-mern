@@ -10,6 +10,9 @@ import Typography from 'material-ui/Typography'
 import Avatar from 'material-ui/Avatar'
 import Divider from 'material-ui/Divider'
 import Person from 'material-ui-icons/Person'
+import { Link } from 'react-router-dom'
+import IconButton from 'material-ui/IconButton'
+import Edit from 'material-ui-icons/Edit'
 
 
 const styles = theme => ({
@@ -77,6 +80,15 @@ class Profile extends Component {
           </ListItemAvatar>
           <ListItemText primary={this.state.user.name} 
                        secondary={this.state.user.email}/>
+        { auth.isAuthenticated().user && auth.isAuthenticated().user._id == this.state.user._id &&
+    (<ListItemSecondaryAction>
+       <Link to={"/user/edit/" + this.state.user._id}>
+         <IconButton color="primary">
+           <Edit/>
+         </IconButton>
+       </Link>
+       {/* <DeleteUser userId={this.state.user._id}/> */}
+    </ListItemSecondaryAction>)}
         </ListItem>
         <Divider/>
         <ListItem>
