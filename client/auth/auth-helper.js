@@ -1,4 +1,4 @@
-import {signout} from './api-auth'
+import apiAuth from './api-auth'
 
 let auth = {
     isAuthenticated(){
@@ -20,9 +20,6 @@ let auth = {
         if(typeof window !== "undefined")
             sessionStorage.removeItem('jwt')
         cb()
-        signout.then(data => {
-            document.cookie = "t=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;"
-        })
     }
 }
 

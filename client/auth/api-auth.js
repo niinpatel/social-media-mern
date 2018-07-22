@@ -8,7 +8,7 @@ let signout = () => {
     return axios.get('/auth/signout').then(res => res.data)
 }
 
-export {
+export default {
     signin,
     signout
 }

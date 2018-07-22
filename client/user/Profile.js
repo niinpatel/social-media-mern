@@ -13,6 +13,7 @@ import Person from 'material-ui-icons/Person'
 import { Link } from 'react-router-dom'
 import IconButton from 'material-ui/IconButton'
 import Edit from 'material-ui-icons/Edit'
+import DeleteUser from './DeleteUser'
 
 
 const styles = theme => ({
@@ -87,7 +88,7 @@ class Profile extends Component {
            <Edit/>
          </IconButton>
        </Link>
-       {/* <DeleteUser userId={this.state.user._id}/> */}
+       <DeleteUser userId={this.state.user._id}/>
     </ListItemSecondaryAction>)}
         </ListItem>
         <Divider/>
