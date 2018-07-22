@@ -4,6 +4,7 @@ import Home from './Home'
 import Users from './user/Users'
 import Signup from './user/Signup'
 import Signin from './auth/Signin'
+import Profile from './user/Profile'
 
 
 class MainRouter extends Component {
@@ -24,6 +25,7 @@ class MainRouter extends Component {
                     <Route path="/users" component={Users}/>
                     <Route path="/signup" component={Signup}/>
                     <Route path="/signin" component={Signin}/>
+                    <Route path="/user/:userId" component={Profile}/>
                 </Switch>
                 <Link to="/signup">Signup</Link>
                 <Link to="/users">Users</Link>

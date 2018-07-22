@@ -38,17 +38,11 @@ class Users extends Component {
     componentDidMount(){
                 
         list().then(data => {
-            console.log(data);
-            
-            if(data.error){
-                console.log(data.error);
-            }
-            else {
                 this.setState({
                     users: data
                 })
             }
-        })
+        ).catch(err => console.log(err.response.data.error))
     }
 
     render() {
@@ -61,7 +55,7 @@ class Users extends Component {
             <List dense>
               {this.state.users.map(function(item, i) {
                   return <Link to={"/user/" + item._id} key={i}>
-                    <ListItem button="button">
+                    <ListItem>
                       <ListItemAvatar>
                         <Avatar>
                           <Person/>
