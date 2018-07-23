@@ -7,6 +7,7 @@ import Signin from './auth/Signin'
 import Profile from './user/Profile'
 import EditProfile from './user/EditProfile'
 import PrivateRoute from './auth/PrivateRoute'
+import Menu from './Menu'
 
 
 class MainRouter extends Component {
@@ -22,6 +23,7 @@ class MainRouter extends Component {
     render() {
         return (
             <div>
+                <Menu/>
                 <Switch>
                     <PrivateRoute path="/user/edit/:userId" component={EditProfile}/>   
                     <Route exact path="/" component={Home}/>
@@ -30,10 +32,6 @@ class MainRouter extends Component {
                     <Route path="/signin" component={Signin}/>
                     <Route path="/user/:userId" component={Profile}/>
                 </Switch>                
-                <Link to="/">Home</Link>
-                <Link to="/signup">Signup</Link>
-                <Link to="/users">Users</Link>
-                <Link to="/signin">Signin</Link>
             </div>
         );
     }
