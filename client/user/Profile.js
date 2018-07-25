@@ -65,7 +65,8 @@ class Profile extends Component {
 
     render(){
         const {classes} = this.props
-        const {redirectToSignin} = this.state
+        const {redirectToSignin} = this.state   
+        const photoUrl = this.state.user._id? `/api/users/photo/${this.state.user._id}?${new Date().getTime()}`: '/api/users/defaultphoto'
         if(redirectToSignin)
             return <Redirect to='/signin/'/>
         return (
@@ -75,9 +76,7 @@ class Profile extends Component {
       <List dense>
         <ListItem>
           <ListItemAvatar>
-             <Avatar>
-               <Person/>
-             </Avatar>
+             <Avatar src={photoUrl} />
           </ListItemAvatar>
           <ListItemText primary={this.state.user.name} 
                        secondary={this.state.user.email}/>
@@ -92,6 +91,7 @@ class Profile extends Component {
     </ListItemSecondaryAction>)}
         </ListItem>
         <Divider/>
+        <ListItem> <ListItemText primary={this.state.user.about}/></ListItem>
         <ListItem>
           <ListItemText primary={"Joined: " + 
               (new Date(this.state.user.created)).toDateString()}/>

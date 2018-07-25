@@ -1,6 +1,9 @@
 import User from '../models/user.model'
 import _ from 'lodash'
 import errorHandler from '../helpers/dbErrorHandler'
+import formidable from 'formidable'
+import fs from 'fs'
+import profileImage from '../../assets/images/profile-pic.png'
 
 let create = async(req, res) => {
 
@@ -61,23 +64,50 @@ let remove = async(req, res) => {
 
 }
 
-let update = async(req, res) => {
+let update = (req, res) => {
 
-    try {
-        let user = req.profile
-        user = _.extend(user, req.body)
-        user.updated = Date.now();
-        await user.save()
-        user.hashed_password = undefined
-        user.salt = undefined
-        res.json(user)
-    } catch (e) {
-        console.log(e)
-        return res.status(400).json({error: errorHandler.getErrorMessage(e)})
-    }
+    let form = new formidable.IncomingForm()
+    form.keepExtensions = true
+    form.parse(req, async(err, fields, files) => {
+        if (err) {
+          return res.status(400).json({
+            error: "Photo could not be uploaded"
+          })
+        }
+
+        try {
+            let user = req.profile
+            user = _.extend(user, fields)
+            user.updated = Date.now()
+            if(files.photo){
+                user.photo.data = fs.readFileSync(files.photo.path)
+                user.photo.contentType = files.photo.type
+            }
+            await user.save()
+            user.hashed_password = undefined
+            user.salt = undefined
+            return res.json(user)
+        } catch(e) {
+            return res.status(400).json({
+                error: errorHandler.getErrorMessage(e)
+            })
+        }
+    })
 }
 
+let photo = (req, res, next) => {
+    if(req.profile.photo.data){
+        res.set("Content-Type", req.profile.photo.contentType)
+        return res.send(req.profile.photo.data)
+    }   
+    next()
+
+}
+
+let defaultPhoto = (req, res) => {
+    return res.sendFile(process.cwd() + profileImage)
+}
 
 export default {
-    create, userByID, read, list, remove, update
+    create, userByID, read, list, remove, update, photo, defaultPhoto
 }

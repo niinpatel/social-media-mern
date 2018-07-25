@@ -9,6 +9,7 @@ import {withStyles} from 'material-ui/styles'
 import auth from './../auth/auth-helper'
 import {read, update} from './api-user.js'
 import {Redirect} from 'react-router-dom'
+import FileUpload from 'material-ui-icons/FileUpload'
 
 const styles = theme => ({
   card: {
@@ -54,6 +55,7 @@ class EditProfile extends Component {
       name: '',
       about: '',
       email: '',
+      photo: '',
       password: '',
       redirectToProfile: false,
       error: ''
@@ -82,7 +84,7 @@ class EditProfile extends Component {
       userId: this.match.params.userId
     }, {
       t: jwt.token
-    }, user).then((data) => {
+    }, this.userData).then((data) => {
         this.setState({'redirectToProfile': true})
     }).catch(err =>  this.setState({error: err.response.data.error}))
   }
@@ -107,6 +109,21 @@ class EditProfile extends Component {
           <Typography type="headline" component="h2" className={classes.title}>
             Edit Profile
           </Typography>
+
+          <label htmlFor="icon-button-file">
+            <Button variant="raised" color="default" component="span">
+              Upload <FileUpload/>
+            </Button>
+          </label>
+
+          <span className={classes.filename}>
+              {this.state.photo ? this.state.photo.name : ''}
+          </span>
+
+          <input type="file" accept="image/*" 
+            onChange={this.handleChange('photo')}
+            style={{display: 'none'}}
+            id="icon-button-file"/><br/>
           <TextField id="name" label="Name" className={classes.textField} value={this.state.name} onChange={this.handleChange('name')} margin="normal"/><br/>
           <TextField id="email" type="email" label="Email" className={classes.textField} value={this.state.email} onChange={this.handleChange('email')} margin="normal"/><br/>
           <TextField

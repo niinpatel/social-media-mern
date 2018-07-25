@@ -47,6 +47,7 @@ class Users extends Component {
 
     render() {
         const {classes} = this.props
+
         return (
           <Paper className={classes.root} elevation={4}>
             <Typography type="title" className={classes.title}>
@@ -57,9 +58,7 @@ class Users extends Component {
                   return <Link to={"/user/" + item._id} key={i}>
                     <ListItem>
                       <ListItemAvatar>
-                        <Avatar>
-                          <Person/>
-                        </Avatar>
+                        <Avatar src={`/api/users/photo/${item._id}`}/>
                       </ListItemAvatar>
                       <ListItemText primary={item.name}/>
                       <ListItemSecondaryAction>

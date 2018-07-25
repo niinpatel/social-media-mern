@@ -3,6 +3,12 @@ const router = express.Router()
 import userCtrl from '../controllers/user.controller'
 import authCtrl from '../controllers/auth.controller'
 
+router.route('/defaultphoto')
+    .get(userCtrl.defaultPhoto)
+
+router.route('/photo/:userId')
+    .get(userCtrl.photo, userCtrl.defaultPhoto)
+
 router.route('/')
     .get(userCtrl.list)
     .post(userCtrl.create)
