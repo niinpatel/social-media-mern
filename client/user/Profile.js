@@ -14,6 +14,8 @@ import IconButton from 'material-ui/IconButton'
 import Edit from 'material-ui-icons/Edit'
 import DeleteUser from './DeleteUser'
 import FollowProfileButton from './FollowProfileButton';
+import FollowGrid from './FollowGrid';
+import FindPeople from './FindPeople';
 
 
 const styles = theme => ({
@@ -123,6 +125,9 @@ class Profile extends Component {
                                 (new Date(this.state.user.created)).toDateString()} />
                         </ListItem>
                     </List>
+                    <FollowGrid people={this.state.user.followers || []} />
+                    <FollowGrid people={this.state.user.following || []} />
+                    <FindPeople />
                 </Paper>
             </div>
         )

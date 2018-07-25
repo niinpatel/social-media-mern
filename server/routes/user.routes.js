@@ -15,6 +15,9 @@ router.route('/follow')
 router.route('/unfollow')
     .put(authCtrl.requireSignin, authCtrl.hasAuthorization, userCtrl.removeFollowing, userCtrl.removeFollower)
 
+router.route('/findpeople/:userId')
+    .get(authCtrl.requireSignin, userCtrl.findPeople)
+
 router.route('/')
     .get(userCtrl.list)
     .post(userCtrl.create)

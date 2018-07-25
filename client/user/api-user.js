@@ -33,7 +33,10 @@ let unfollow = (params, credentials, unfollowId) => {
     return axios.put('/api/users/unfollow', { userId: params.userId, unfollowId: unfollowId }, { headers: { Authorization: 'Bearer ' + credentials.t } }).then(res => res.data)
 }
 
+let findPeople = (params, credentials) => {
+    return axios.get('/api/users/findpeople/' + params.userId, { headers: { Authorization: 'Bearer ' + credentials.t } }).then(res => res.data)
+}
 
 export {
-    create, list, signin, read, update, remove, follow, unfollow
+    create, list, signin, read, update, remove, follow, unfollow, findPeople
 }
