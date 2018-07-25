@@ -10,10 +10,10 @@ router.route('/photo/:userId')
     .get(userCtrl.photo, userCtrl.defaultPhoto)
 
 router.route('/follow')
-    .put(authCtrl.requireSignin, userCtrl.addFollowing, userCtrl.addFollower)
+    .put(authCtrl.requireSignin, authCtrl.hasAuthorization, userCtrl.addFollowing, userCtrl.addFollower)
 
 router.route('/unfollow')
-    .put(authCtrl.requireSignin, userCtrl.removeFollowing, userCtrl.removeFollower)
+    .put(authCtrl.requireSignin, authCtrl.hasAuthorization, userCtrl.removeFollowing, userCtrl.removeFollower)
 
 router.route('/')
     .get(userCtrl.list)
