@@ -22,10 +22,13 @@ let create = async(req, res) => {
 let userByID = async(req, res, next, id) => {
     try {
         let user = await User.findById(id)
+                            .populate('followers', '_id name')
+                            .populate('following', '_id name')
+                            .exec()
         if(!user){
             return res.status(400).json({error: 'User not found'})
         }
-        else {
+        else {  
             req.profile = user
             next()
         }
@@ -108,6 +111,90 @@ let defaultPhoto = (req, res) => {
     return res.sendFile(process.cwd() + profileImage)
 }
 
+let addFollowing = async(req, res, next) => {
+    try {
+    let follower = req.body.userId
+    let followed = req.body.followId
+
+    //check if user is already following
+    let user = await User.findById(follower)
+    if(await user.following.find(user => user && user._id == followed)){
+        return res.status(400).json({
+            error: 'Already following this user'
+        })
+    }
+
+    // update the new follower relationship to database
+    await User.findByIdAndUpdate(follower, {$push: {following: followed}})
+    next()
+    } catch(e) {
+        console.log(e)
+        return res.status(400).json({
+            error: errorHandler.getErrorMessage(e)
+        })
+    }
+
+}
+
+let addFollower = async(req, res, next) => {
+    try {
+        let follower = req.body.userId
+        let followed = req.body.followId
+
+        // update the new follower relationship to database and return the result
+        let result = await User.findByIdAndUpdate(followed, {$push: {followers: follower}}, {new: true})
+                            .populate('followers', '_id name')
+                            .populate('following', '_id name')
+                            .exec()
+        result.hashed_password = undefined
+        result.salt = undefined
+        return res.json(result)
+        } catch(e) {
+            console.log(e)
+            return res.status(400).json({
+                error: errorHandler.getErrorMessage(e)
+            })
+        }
+
+}
+
+let removeFollowing = async(req, res, next) => {
+    try{
+        let unfollower = req.body.userId
+        let unfollowed = req.body.unfollowId 
+
+        // remove following from database
+        await User.findByIdAndUpdate(unfollower, {$pull: {following: unfollowed}}, {new: true})
+        next()
+    } catch(e){
+        return res.status(400).json({
+            error: errorHandler.getErrorMessage(e)
+        })
+    }
+
+} 
+
+let removeFollower = async(req, res) => {
+    try{
+        let unfollower = req.body.userId
+        let unfollowed = req.body.unfollowId  
+
+        // remove follower from database and return result
+        let result = await User.findByIdAndUpdate(unfollowed, {$pull: {followers: unfollower}}, {new : true})
+                                .populate('followers', '_id name')
+                                .populate('following', '_id name')
+                                .exec()
+        result.hashed_password = undefined
+        result.salt = undefined
+        return res.json(result)
+    } catch(e){
+        return res.status(400).json({
+            error: errorHandler.getErrorMessage(e)
+        })
+    }
+
+}
+
 export default {
-    create, userByID, read, list, remove, update, photo, defaultPhoto
+    create, userByID, read, list, remove, update, photo, defaultPhoto, addFollower, addFollowing, removeFollower, removeFollowing
 }
