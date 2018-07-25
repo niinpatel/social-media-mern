@@ -24,7 +24,7 @@ const userSchema = new mongoose.Schema({
     },
     updated: {
         type: Date,
-        default:Date.now()
+        default: Date.now()
     },
     about: {
         type: String,
@@ -34,27 +34,27 @@ const userSchema = new mongoose.Schema({
         data: Buffer,
         contentType: String
     },
-    following: [{type: mongoose.Schema.Types.ObjectId, ref: 'User'}],
-    followers: [{type: mongoose.Schema.Types.ObjectId, ref: 'User'}]
+    following: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
+    followers: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }]
 
 });
 
 userSchema
     .virtual('password')
-    .set(function(password) {
+    .set(function (password) {
         this._password = password
         this.salt = this.makeSalt()
         this.hashed_password = this.encryptPassword(password)
     })
-    .get(function() {
+    .get(function () {
         return this._password
     })
 
 userSchema.methods = {
-    authenticate: function(plainText) {
+    authenticate: function (plainText) {
         return this.encryptPassword(plainText) === this.hashed_password
     },
-    encryptPassword: function(password) {
+    encryptPassword: function (password) {
         if (!password) return ''
         try {
             return crypto
@@ -65,16 +65,16 @@ userSchema.methods = {
             return ''
         }
     },
-    makeSalt: function() {
+    makeSalt: function () {
         return Math.round((new Date().valueOf() * Math.random())) + ''
     }
 }
 
-userSchema.path('hashed_password').validate(function(v) {
-    if(this._password && this._password.length < 6){
+userSchema.path('hashed_password').validate(function (v) {
+    if (this._password && this._password.length < 6) {
         this.invalidate('password', 'Password should be at least 6 characters')
     }
-    if(this.isNew && !this._password){
+    if (this.isNew && !this._password) {
         this.invalidate('password', 'Password is required')
     }
 }, null);

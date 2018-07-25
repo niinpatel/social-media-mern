@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Button } from 'material-ui';
 import propTypes from 'prop-types'
-import {follow, unfollow} from './api-user'
+import { follow, unfollow } from './api-user'
 
 class FollowProfileButton extends Component {
 
@@ -10,19 +10,19 @@ class FollowProfileButton extends Component {
     }
 
     unfollowClick = () => {
-        this.props.onButtonClick(unfollow) 
+        this.props.onButtonClick(unfollow)
     }
     render() {
         return (
-        <div>
-            {
-                this.props.following? (
-                    <Button variant="raised" color="secondary" onClick={this.unfollowClick}>Unfollow</Button>
-                ): (
-                    <Button variant="raised" color="primary" onClick={this.followClick}>Follow</Button>
-                )
-            }
-        </div>
+            <div>
+                {
+                    this.props.following ? (
+                        <Button variant="raised" color="secondary" onClick={this.unfollowClick}>Unfollow</Button>
+                    ) : (
+                            <Button variant="raised" color="primary" onClick={this.followClick}>Follow</Button>
+                        )
+                }
+            </div>
         )
     }
 }

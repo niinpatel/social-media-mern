@@ -1,14 +1,14 @@
-import React, {Component} from 'react'
-import Card, {CardActions, CardContent} from 'material-ui/Card'
+import React, { Component } from 'react'
+import Card, { CardActions, CardContent } from 'material-ui/Card'
 import Button from 'material-ui/Button'
 import TextField from 'material-ui/TextField'
 import Typography from 'material-ui/Typography'
 import Icon from 'material-ui/Icon'
 import PropTypes from 'prop-types'
-import {withStyles} from 'material-ui/styles'
+import { withStyles } from 'material-ui/styles'
 import auth from './../auth/auth-helper'
-import {read, update} from './api-user.js'
-import {Redirect} from 'react-router-dom'
+import { read, update } from './api-user.js'
+import { Redirect } from 'react-router-dom'
 import FileUpload from 'material-ui-icons/FileUpload'
 
 const styles = theme => ({
@@ -43,13 +43,13 @@ const styles = theme => ({
   input: {
     display: 'none'
   },
-  filename:{
-    marginLeft:'10px'
+  filename: {
+    marginLeft: '10px'
   }
 })
 
 class EditProfile extends Component {
-  constructor({match}) {
+  constructor({ match }) {
     super()
     this.state = {
       name: '',
@@ -68,9 +68,9 @@ class EditProfile extends Component {
     const jwt = auth.isAuthenticated()
     read({
       userId: this.match.params.userId
-    }, {t: jwt.token}).then((data) => {
-        this.setState({id: data._id, name: data.name, email: data.email, about: data.about})
-    }).catch(err => this.setState({error: err.response.data.error}))
+    }, { t: jwt.token }).then((data) => {
+      this.setState({ id: data._id, name: data.name, email: data.email, about: data.about })
+    }).catch(err => this.setState({ error: err.response.data.error }))
   }
   clickSubmit = () => {
     const jwt = auth.isAuthenticated()
@@ -83,10 +83,10 @@ class EditProfile extends Component {
     update({
       userId: this.match.params.userId
     }, {
-      t: jwt.token
-    }, this.userData).then((data) => {
-        this.setState({'redirectToProfile': true})
-    }).catch(err =>  this.setState({error: err.response.data.error}))
+        t: jwt.token
+      }, this.userData).then((data) => {
+        this.setState({ 'redirectToProfile': true })
+      }).catch(err => this.setState({ error: err.response.data.error }))
   }
   handleChange = name => event => {
     const value = name === 'photo'
@@ -96,12 +96,12 @@ class EditProfile extends Component {
     this.setState({ [name]: value })
   }
   render() {
-    const {classes} = this.props
-    if (this.state.redirectToProfile) {      
-      return (<Redirect to={'/user/' + this.state.id}/>)
+    const { classes } = this.props
+    if (this.state.redirectToProfile) {
+      return (<Redirect to={'/user/' + this.state.id} />)
     }
-    if(this.state.redirectToLogin){
-        return (<Redirect to='/signin'/>)
+    if (this.state.redirectToLogin) {
+      return (<Redirect to='/signin' />)
     }
     return (
       <Card className={classes.card}>
@@ -112,20 +112,20 @@ class EditProfile extends Component {
 
           <label htmlFor="icon-button-file">
             <Button variant="raised" color="default" component="span">
-              Upload <FileUpload/>
+              Upload <FileUpload />
             </Button>
           </label>
 
           <span className={classes.filename}>
-              {this.state.photo ? this.state.photo.name : ''}
+            {this.state.photo ? this.state.photo.name : ''}
           </span>
 
-          <input type="file" accept="image/*" 
+          <input type="file" accept="image/*"
             onChange={this.handleChange('photo')}
-            style={{display: 'none'}}
-            id="icon-button-file"/><br/>
-          <TextField id="name" label="Name" className={classes.textField} value={this.state.name} onChange={this.handleChange('name')} margin="normal"/><br/>
-          <TextField id="email" type="email" label="Email" className={classes.textField} value={this.state.email} onChange={this.handleChange('email')} margin="normal"/><br/>
+            style={{ display: 'none' }}
+            id="icon-button-file" /><br />
+          <TextField id="name" label="Name" className={classes.textField} value={this.state.name} onChange={this.handleChange('name')} margin="normal" /><br />
+          <TextField id="email" type="email" label="Email" className={classes.textField} value={this.state.email} onChange={this.handleChange('email')} margin="normal" /><br />
           <TextField
             id="multiline-flexible"
             label="About"
@@ -135,10 +135,10 @@ class EditProfile extends Component {
             onChange={this.handleChange('about')}
             className={classes.textField}
             margin="normal"
-          /><br/>
+          /><br />
 
-          <TextField id="password" type="password" label="Password" className={classes.textField} value={this.state.password} onChange={this.handleChange('password')} margin="normal"/>
-          <br/> {
+          <TextField id="password" type="password" label="Password" className={classes.textField} value={this.state.password} onChange={this.handleChange('password')} margin="normal" />
+          <br /> {
             this.state.error && (<Typography component="p" color="error">
               <Icon color="error" className={classes.error}>error</Icon>
               {this.state.error}

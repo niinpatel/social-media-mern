@@ -1,5 +1,5 @@
-export default ({markup, css}) => {
-    return `<!doctype html>
+export default ({ markup, css }) => {
+  return `<!doctype html>
       <html lang="en">
           <head>
              <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:100,300,400">

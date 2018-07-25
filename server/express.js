@@ -33,7 +33,7 @@ devBundle.compile(app)
 
 app.use('/dist', express.static(path.join(CURRENT_WORKING_DIR, 'dist')))
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(compress());
 app.use(helmet());
@@ -46,10 +46,10 @@ app.use('/api/users', userRoutes);
 app.use('/auth', authRoutes)
 
 app.get('*', (req, res) => {
-    const sheetsRegistry = new SheetsRegistry()
-    const theme = createMuiTheme({
-      palette: {
-        primary: {
+  const sheetsRegistry = new SheetsRegistry()
+  const theme = createMuiTheme({
+    palette: {
+      primary: {
         light: '#757de8',
         main: '#3f51b5',
         dark: '#002984',
@@ -61,39 +61,39 @@ app.get('*', (req, res) => {
         dark: '#c60055',
         contrastText: '#000',
       },
-        openTitle: indigo['400'],
-        protectedTitle: pink['400'],
-        type: 'light'
-      },
-    })
-    const generateClassName = createGenerateClassName()
-    const context = {}
-    const markup = ReactDOMServer.renderToString(
-       <StaticRouter location={req.url} context={context}>
-          <JssProvider registry={sheetsRegistry} generateClassName={generateClassName}>
-             <MuiThemeProvider theme={theme} sheetsManager={new Map()}>
-               <MainRouter/>
-             </MuiThemeProvider>
-          </JssProvider>
-       </StaticRouter>
-      )
-     if (context.url) {
-       return res.redirect(303, context.url)
-     }
-     const css = sheetsRegistry.toString()
-     res.status(200).send(Template({
-       markup: markup,
-       css: css
-     }))
- 
+      openTitle: indigo['400'],
+      protectedTitle: pink['400'],
+      type: 'light'
+    },
+  })
+  const generateClassName = createGenerateClassName()
+  const context = {}
+  const markup = ReactDOMServer.renderToString(
+    <StaticRouter location={req.url} context={context}>
+      <JssProvider registry={sheetsRegistry} generateClassName={generateClassName}>
+        <MuiThemeProvider theme={theme} sheetsManager={new Map()}>
+          <MainRouter />
+        </MuiThemeProvider>
+      </JssProvider>
+    </StaticRouter>
+  )
+  if (context.url) {
+    return res.redirect(303, context.url)
+  }
+  const css = sheetsRegistry.toString()
+  res.status(200).send(Template({
+    markup: markup,
+    css: css
+  }))
+
 })
 
 
 app.use((err, req, res, next) => {
-    if(err.name === 'UnauthorizedError') {
-        return res.status(401).json({error: err.name + ": " + err.message})
-    }
-    next()
+  if (err.name === 'UnauthorizedError') {
+    return res.status(401).json({ error: err.name + ": " + err.message })
+  }
+  next()
 })
 
 export default app;
