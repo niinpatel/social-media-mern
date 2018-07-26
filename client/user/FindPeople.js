@@ -64,12 +64,13 @@ class FindPeople extends Component {
 
     componentDidMount = () => {
         const jwt = auth.isAuthenticated()
-        findPeople({ userId: jwt.user._id }, { t: jwt.token })
-            .then(data => {
-                this.setState({
-                    users: data
-                })
-            }).catch(err => console.log(err.response.data.error))
+        if(jwt)
+            findPeople({ userId: jwt.user._id }, { t: jwt.token })
+                .then(data => {
+                    this.setState({
+                        users: data
+                    })
+                }).catch(err => console.log(err.response.data.error))
     }
 
     handleRequestClose = () => {

@@ -4,6 +4,7 @@ import { withStyles } from 'material-ui/styles'
 import Card, { CardContent, CardMedia } from 'material-ui/Card'
 import Typography from 'material-ui/Typography'
 import seashellImg from './../assets/images/seashell.jpg'
+import NewsFeed from './post/NewsFeed';
 
 const styles = theme => ({
     card: {

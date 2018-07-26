@@ -42,8 +42,10 @@ app.use(cors());
 
 import userRoutes from './routes/user.routes'
 import authRoutes from './routes/auth.routes'
+import postRoutes from './routes/post.routes'
 app.use('/api/users', userRoutes);
 app.use('/auth', authRoutes)
+app.use('/api/posts', postRoutes)
 
 app.get('*', (req, res) => {
   const sheetsRegistry = new SheetsRegistry()

@@ -16,6 +16,7 @@ import DeleteUser from './DeleteUser'
 import FollowProfileButton from './FollowProfileButton';
 import FollowGrid from './FollowGrid';
 import FindPeople from './FindPeople';
+import NewsFeed from '../post/NewsFeed';
 
 
 const styles = theme => ({
@@ -125,6 +126,7 @@ class Profile extends Component {
                                 (new Date(this.state.user.created)).toDateString()} />
                         </ListItem>
                     </List>
+                    <NewsFeed/>
                     <FollowGrid people={this.state.user.followers || []} />
                     <FollowGrid people={this.state.user.following || []} />
                     <FindPeople />
