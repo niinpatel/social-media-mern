@@ -1,6 +1,7 @@
 import Post from "../models/post.model";
 import formidable from 'formidable'
 import fs from 'fs'
+import errorHandler from '../helpers/dbErrorHandler'
 
 let listNewsFeed = async (req, res) => {
     try {
@@ -13,7 +14,7 @@ let listNewsFeed = async (req, res) => {
             .sort('-created')
             .exec()
         return res.json(posts)
-    } catch (e) {        
+    } catch (e) {
         return res.status(400).json({
             error: errorHandler.getErrorMessage(err)
         })
@@ -52,7 +53,7 @@ let postById = async (req, res, next, id) => {
         let post = await Post.findById(id)
             .populate('postedBy', '_id name')
             .exec()
-        if(!post)
+        if (!post)
             return res.status(400).json({
                 error: 'Post Not Found'
             })
@@ -66,12 +67,54 @@ let postById = async (req, res, next, id) => {
 
 }
 
-let photo = async(req, res) => {
+let photo = async (req, res) => {
     let post = await Post.findById(req.post)
     res.set('Content-Type', req.post.photo.contentType)
     res.send(post.photo.data)
 }
 
+let listByUser = async (req, res) => {
+    try {
+        let posts = await Post.find({ postedBy: req.profile._id })
+            .populate('comments', 'text postedBy')
+            .populate('comments.postedBy', '_id name')
+            .populate('postedBy', '_id name')
+            .sort('-created')
+            .exec()
+        res.json(posts)
+    } catch (e) {
+        return res.status(400).json({
+            error: errorHandler.getErrorMessage(e)
+        })
+    }
+}
+
+const isPoster = (req, res, next) => {
+    let isPoster = req.post && req.auth &&
+        req.post.postedBy._id == req.auth._id
+            
+    if (!isPoster) {
+        return res.status(403).json({
+            error: "User is not authorized"
+        })
+    }
+    next()
+}
+
+
+let remove = async(req, res) => {
+    try{
+    let post = await Post.findByIdAndRemove(req.post.id)
+    console.log(post);
+
+    return res.json(post)
+    } catch(e){
+        return res.status(400).json({
+            error: "Could not remove"
+        })
+    }
+}
+
 export default {
-    listNewsFeed, create, postById, photo
+    listNewsFeed, create, postById, photo, listByUser, isPoster, remove
 }

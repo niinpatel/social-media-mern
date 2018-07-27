@@ -14,6 +14,12 @@ router.route('/new/:userId')
 router.route('/photo/:postId')
     .get(postCtrl.photo)
 
+router.route('/by/:userId')
+    .get(authCtrl.requireSignin,postCtrl.listByUser)
+
+router.route('/:postId')
+    .delete(authCtrl.requireSignin, postCtrl.isPoster, postCtrl.remove)
+
 router.param('userId', userCtrl.userByID)
 router.param('postId', postCtrl.postById)
 
