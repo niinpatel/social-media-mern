@@ -15,7 +15,19 @@ router.route('/photo/:postId')
     .get(postCtrl.photo)
 
 router.route('/by/:userId')
-    .get(authCtrl.requireSignin,postCtrl.listByUser)
+    .get(authCtrl.requireSignin, postCtrl.listByUser)
+
+router.route('/api/posts/like')
+    .put(authCtrl.requireSignin, postCtrl.like)
+
+router.route('/api/posts/unlike')
+    .put(authCtrl.requireSignin, postCtrl.unlike)
+
+router.route('/api/posts/comment')
+    .put(authCtrl.requireSignin, postCtrl.comment)
+
+router.route('/api/posts/uncomment')
+    .put(authCtrl.requireSignin, postCtrl.uncomment)
 
 router.route('/:postId')
     .delete(authCtrl.requireSignin, postCtrl.isPoster, postCtrl.remove)

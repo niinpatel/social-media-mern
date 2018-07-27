@@ -92,7 +92,7 @@ let listByUser = async (req, res) => {
 const isPoster = (req, res, next) => {
     let isPoster = req.post && req.auth &&
         req.post.postedBy._id == req.auth._id
-            
+
     if (!isPoster) {
         return res.status(403).json({
             error: "User is not authorized"
@@ -102,19 +102,82 @@ const isPoster = (req, res, next) => {
 }
 
 
-let remove = async(req, res) => {
-    try{
-    let post = await Post.findByIdAndRemove(req.post.id)
-    console.log(post);
+let remove = async (req, res) => {
+    try {
+        let post = await Post.findByIdAndRemove(req.post.id)
+        console.log(post);
 
-    return res.json(post)
-    } catch(e){
+        return res.json(post)
+    } catch (e) {
         return res.status(400).json({
             error: "Could not remove"
         })
     }
 }
 
+let like = async (req, res) => {
+    try {
+        let result = await Post.findByIdAndUpdate(req.body.postId,
+            { $push: { likes: req.body.userId } }, { new: true })
+            .exec()
+        res.json(result)
+    } catch (err) {
+        return res.status(400).json({
+            error: errorHandler.getErrorMessage(err)
+        })
+    }
+
+}
+
+const unlike = async (req, res) => {
+    try {
+        let result = await Post.findByIdAndUpdate(req.body.postId, { $pull: { likes: req.body.userId } }, { new: true })
+            .exec()
+        res.json(result)
+    }
+    catch (err) {
+        return res.status(400).json({
+            error: errorHandler.getErrorMessage(err)
+        })
+    }
+
+}
+
+let comment = async (req, res) => {
+    try {
+        let comment = req.body.comment
+        comment.postedBy = req.body.userId
+        let result = await Post.findByIdAndUpdate(req.body.postId,
+            { $push: { comments: comment } }, { new: true })
+            .populate('comments.postedBy', '_id name')
+            .populate('postedBy', '_id name')
+            .exec()
+        res.json(result)
+    }
+    catch (err) {
+        return res.status(400).json({
+            error: errorHandler.getErrorMessage(err)
+        })
+    }
+}
+
+
+let uncomment = async (req, res) => {
+    try {
+        let comment = req.body.comment
+        let result = await Post.findByIdAndUpdate(req.body.postId, { $pull: { comments: { _id: comment._id } } }, { new: true })
+            .populate('comments.postedBy', '_id name')
+            .populate('postedBy', '_id name')
+            .exec()
+        res.json(result)
+    } catch (err) {
+        return res.status(400).json({
+            error: errorHandler.getErrorMessage(err)
+        })
+    }
+
+}
+
 export default {
-    listNewsFeed, create, postById, photo, listByUser, isPoster, remove
+    listNewsFeed, create, postById, photo, listByUser, isPoster, remove, like, unlike, comment, uncomment
 }
