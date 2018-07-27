@@ -52,15 +52,17 @@ class Newsfeed extends Component {
     }
 
     removePost = (post) => {
+        let posts = this.state.posts
+        posts.splice(this.state.posts.indexOf(post), 1)
         this.setState({
-            posts: this.state.posts.splice(this.state.posts.indexOf(post), 1)
+            posts: posts
         })
     }
 
     render() {
         return (
         <Card>
-            <Typography type="title"> Newsfeed </Typography>
+            <Typography type="title" className={this.props.classes.title}> Newsfeed </Typography>
             <Divider />
             <NewPost addUpdate={this.addPost} />
             <Divider />

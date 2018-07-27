@@ -17,16 +17,16 @@ router.route('/photo/:postId')
 router.route('/by/:userId')
     .get(authCtrl.requireSignin, postCtrl.listByUser)
 
-router.route('/api/posts/like')
+router.route('/like')
     .put(authCtrl.requireSignin, postCtrl.like)
 
-router.route('/api/posts/unlike')
+router.route('/unlike')
     .put(authCtrl.requireSignin, postCtrl.unlike)
 
-router.route('/api/posts/comment')
+router.route('/comment')
     .put(authCtrl.requireSignin, postCtrl.comment)
 
-router.route('/api/posts/uncomment')
+router.route('/uncomment')
     .put(authCtrl.requireSignin, postCtrl.uncomment)
 
 router.route('/:postId')

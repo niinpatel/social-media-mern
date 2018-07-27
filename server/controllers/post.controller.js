@@ -105,8 +105,6 @@ const isPoster = (req, res, next) => {
 let remove = async (req, res) => {
     try {
         let post = await Post.findByIdAndRemove(req.post.id)
-        console.log(post);
-
         return res.json(post)
     } catch (e) {
         return res.status(400).json({
@@ -146,7 +144,7 @@ const unlike = async (req, res) => {
 let comment = async (req, res) => {
     try {
         let comment = req.body.comment
-        comment.postedBy = req.body.userId
+        comment.postedBy = req.body.userId        
         let result = await Post.findByIdAndUpdate(req.body.postId,
             { $push: { comments: comment } }, { new: true })
             .populate('comments.postedBy', '_id name')
@@ -154,7 +152,7 @@ let comment = async (req, res) => {
             .exec()
         res.json(result)
     }
-    catch (err) {
+    catch (err) {        
         return res.status(400).json({
             error: errorHandler.getErrorMessage(err)
         })
